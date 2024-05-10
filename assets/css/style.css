@@ -1,0 +1,63 @@
+header {
+    display: flex;
+    padding: 1rem;
+}
+
+div#timer-div {
+    flex: 1;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+div#high-score-div {
+    flex: 1;
+    text-align: end;
+}
+
+p.timer {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: medium;
+}
+
+p.high-score {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: medium;
+    color:magenta;
+}
+
+div#quiz-container {
+    padding-right: 3rem;
+    padding-left: 3rem;
+}
+
+div#quiz-container h1 {
+    text-align: center;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-weight: bolder;
+}
+
+div#quiz-container p {
+    text-align: center;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    margin-left: auto;
+    margin-right: auto;
+    width: 60%;
+}
+
+button#start-btn {
+    margin: 0 auto;
+    display: block;
+    background-color: rgb(211, 0, 211);
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-weight: bold;
+    font-size: medium;
+    color: white;
+    padding: 0.5rem;
+    border-radius: 25px;
+    border-color: transparent;
+}
+
+button#start-btn:hover {
+    color: rgb(211, 0, 211);
+    background-color: white;
+    border-color: rgb(211, 0, 211);
+}
