@@ -71,12 +71,59 @@ const questions = [
             {option: "2006", correct: false},
         ],
     },
-]
+];
 
-const startButton = document.querySelector('#start-btn');
+//shuffle questions
+const shuffledQuestions = questions.sort(() => 0.5 - Math.random());
+//keeps track of which question we're currently at
+var currentIndex = 0;
+
+const startPageEl = document.querySelector('#start-container');
+const startButtonEl = startPageEl.querySelector('#start-btn');
+const quizContainerEl = document.querySelector('#quiz-container');
+const questionContainerEl = document.querySelector('#question-container');
 
 var startQuiz = function() {
-    alert('Quiz started.')
-}
+    //hide welcome screen
+    startPageEl.hidden = true;
 
-startButton.addEventListener('click', startQuiz);
+    var questionContainer = displayQuestion();
+    var optionsContainer = displayChoices();
+
+    //append to page
+    quizContainerEl.appendChild(questionContainer);
+    quizContainerEl.appendChild(optionsContainer);
+};
+
+var displayQuestion = function() {
+    if(currentIndex <= questions.length) {
+        //create question element
+        var questionH2 = document.createElement('h2');
+        questionH2.setAttribute('id', 'question');
+        questionH2.textContent = questions[currentIndex].q;
+
+        return questionH2;
+    };
+};
+
+var displayChoices = function() {
+    //create randomized order of choices
+    var randomizedChoices = questions[currentIndex].a.sort(() => 0.5 - Math.random());
+    const choicesContainer = document.querySelector('#choices-container');
+   
+    //loop through and create buttons
+   for(var i = 0; i < randomizedChoices.length; i++){
+        //create choices element
+        var buttonEl = document.createElement('button');
+        buttonEl.classList.add('choice-btn');
+        buttonEl.textContent = randomizedChoices[i].option;
+
+
+        //display to page 
+        choicesContainer.appendChild(buttonEl);
+   };
+
+   return choicesContainer;
+};
+
+startButtonEl.addEventListener('click', startQuiz);
