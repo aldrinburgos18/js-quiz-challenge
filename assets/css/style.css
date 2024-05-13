@@ -54,7 +54,8 @@ button#start-btn {
     padding: 0.5rem;
     border-radius: 25px;
     border-color: transparent;
-}
+};
+
 
 button#start-btn:hover {
     color: rgb(211, 0, 211);
@@ -68,14 +69,15 @@ div#quiz-container {
     padding-left: 3rem;
     margin: auto;
     width: 55%;
-}
+};
+
+
 
 div#quiz-container h2 {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
 button.choice-btn {
-    background-color: rgb(116, 0, 211);
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     border-color: transparent;
     font-weight: bold;
@@ -87,8 +89,69 @@ button.choice-btn {
     width: 20rem;
 }
 
-button.choice-btn:hover {
+button.neutral{ 
+    background-color: rgb(116, 0, 211);
+}
+
+button.neutral:hover {
     color: rgb(116, 0, 211);
     background-color: white;
     border-color: rgb(211, 0, 211);
+}
+
+button.correct {
+    background-color: green;
+}
+
+button.incorrect {
+    background-color: red;
+}
+
+div#stat-container {
+    border-top: solid 0.1rem black;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    display: flex;
+}
+
+div#correct-stat-container {
+    flex: 1;
+    padding: 0;
+}
+
+h3#indicator {
+    margin-top: 0.3rem;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+div#next-btn-container {
+    flex: 1;
+    text-align: end;
+}
+
+button#next-btn {
+    display: block;
+    margin-left:auto;
+    margin-right: 0;
+    background-color: rgb(211, 0, 211);
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-weight: bold;
+    font-size: medium;
+    color: white;
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+    padding-right: 0.6rem;
+    padding-left: 0.6rem;
+    border-radius: 15px;
+    border-color: transparent;
+}
+
+button#next-btn:hover {
+    color: rgb(250, 0, 250);
+    background-color: white;
+    border-color: rgb(250, 0, 250);
+}
+
+button:disabled {
+    background-color: grey;
 }

@@ -72,58 +72,121 @@ const questions = [
         ],
     },
 ];
-
 //shuffle questions
-const shuffledQuestions = questions.sort(() => 0.5 - Math.random());
+questions.sort(() => 0.5 - Math.random());
+
 //keeps track of which question we're currently at
 var currentIndex = 0;
 
 const startPageEl = document.querySelector('#start-container');
 const startButtonEl = startPageEl.querySelector('#start-btn');
 const quizContainerEl = document.querySelector('#quiz-container');
-const questionContainerEl = document.querySelector('#question-container');
 
 var startQuiz = function() {
-    //hide welcome screen
-    startPageEl.hidden = true;
+    if(currentIndex <= questions.length){
+        //hide welcome screen
+        startPageEl.hidden = true;
+    
+        //create question container div
+        var questionContainerEl = document.createElement('div');
+        questionContainerEl.id = 'question-container';
 
-    var questionContainer = displayQuestion();
-    var optionsContainer = displayChoices();
+        var questionContainer = displayQuestion();
+        var choicesContainer = displayChoices();
 
-    //append to page
-    quizContainerEl.appendChild(questionContainer);
-    quizContainerEl.appendChild(optionsContainer);
+        //append to page
+        questionContainerEl.appendChild(questionContainer);
+        quizContainerEl.appendChild(questionContainerEl);
+        quizContainerEl.appendChild(choicesContainer);
+
+        choicesContainer.addEventListener('click', checkAnswer);
+    };
 };
 
 var displayQuestion = function() {
-    if(currentIndex <= questions.length) {
-        //create question element
-        var questionH2 = document.createElement('h2');
-        questionH2.setAttribute('id', 'question');
-        questionH2.textContent = questions[currentIndex].q;
+    //create question element
+    var questionH2 = document.createElement('h2');
+    questionH2.setAttribute('id', 'question');
+    questionH2.textContent = questions[currentIndex].q;
 
-        return questionH2;
-    };
+    return questionH2;
 };
 
 var displayChoices = function() {
     //create randomized order of choices
     var randomizedChoices = questions[currentIndex].a.sort(() => 0.5 - Math.random());
-    const choicesContainer = document.querySelector('#choices-container');
+    const choicesContainer = document.createElement('div');
+    choicesContainer.id = 'choices-container';
    
     //loop through and create buttons
    for(var i = 0; i < randomizedChoices.length; i++){
         //create choices element
         var buttonEl = document.createElement('button');
-        buttonEl.classList.add('choice-btn');
+        buttonEl.classList.add('choice-btn', 'neutral');
         buttonEl.textContent = randomizedChoices[i].option;
-
 
         //display to page 
         choicesContainer.appendChild(buttonEl);
    };
-
    return choicesContainer;
 };
+
+var checkAnswer = function(e) {
+    var correctAnswer = questions[currentIndex].a.find((correctAnswer) => correctAnswer.correct);
+    var selectedOption = e.target;
+    var isButton = selectedOption.matches('button');
+    
+    if(isButton) {
+        if(selectedOption.textContent === correctAnswer.option) {
+            selectedOption.classList.remove('neutral');
+            selectedOption.classList.add('correct');
+            showStatIndicator(true);
+        } else {
+            selectedOption.classList.remove('neutral');
+            selectedOption.classList.add('incorrect');
+            showStatIndicator(false);
+        };
+        
+    };
+};
+
+var showStatIndicator = function(isCorrect) {
+    //disable all btn
+    document.querySelectorAll('.choice-btn.neutral').forEach((btns) => {btns.classList.remove('neutral'); btns.disabled = true});
+
+    //create elements
+    var statContainerEl = document.createElement('div');
+    statContainerEl.id = 'stat-container';
+    var indicatorCont = document.createElement('div');
+    var indicatorEl = document.createElement('h3');
+    indicatorCont.id = 'correct-stat-container';
+    indicatorEl.id = 'indicator';
+    indicatorCont.appendChild(indicatorEl);
+    var nextBtnCont = document.createElement('div');
+    var nextButtonEl = document.createElement('button');
+    nextBtnCont.id = 'next-btn-container';
+    nextButtonEl.id = 'next-btn'
+    nextButtonEl.textContent = 'Next';
+    nextBtnCont.appendChild(nextButtonEl);
+    if(isCorrect) {
+        indicatorEl.textContent = 'Correct!' 
+    } else {
+        indicatorEl.textContent = 'Incorrect.'
+    }
+    statContainerEl.appendChild(indicatorCont);
+    statContainerEl.appendChild(nextBtnCont);
+    quizContainerEl.appendChild(statContainerEl);
+
+    var nextButton = statContainerEl.querySelector('#next-btn');
+    nextButton.addEventListener('click', nextQuestion);
+};
+
+var nextQuestion = function() {
+    currentIndex++
+
+    if(currentIndex <= questions.length) {
+        
+    }
+}
 
 startButtonEl.addEventListener('click', startQuiz);
