@@ -71,10 +71,12 @@ div#quiz-container {
     width: 55%;
 };
 
-
-
 div#quiz-container h2 {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+div#choices-container {
+    width: 50%;
 }
 
 button.choice-btn {
@@ -119,6 +121,11 @@ div#correct-stat-container {
     padding: 0;
 }
 
+div#high-score-container {
+    height: 20rem;
+    overflow-y:auto;
+}
+
 h3#indicator {
     margin-top: 0.3rem;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
@@ -144,6 +151,22 @@ button#next-btn {
     padding-left: 0.6rem;
     border-radius: 15px;
     border-color: transparent;
+}
+
+button#back-btn {
+    background-color: rgb(211, 0, 211);
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: white;
+    margin: 0.7rem;
+    padding: 0.2rem;
+    border-radius: 10px;
+    border-color: transparent;
+}
+
+button#back-btn:hover {
+    color: rgb(250, 0, 250);
+    background-color: white;
+    border-color: rgb(250, 0, 250);
 }
 
 button#next-btn:hover {

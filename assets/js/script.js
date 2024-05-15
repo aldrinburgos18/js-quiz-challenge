@@ -75,17 +75,29 @@ const questions = [
 //shuffle questions
 questions.sort(() => 0.5 - Math.random());
 
+//timer initialization
+var timer, time = 60;
+
+//highscore initialization
+var highscores = [];
+
 //keeps track of which question we're currently at
 var currentIndex = 0;
 
 const startPageEl = document.querySelector('#start-container');
+const timerEl = document.querySelector('.timer');
+const viewHighScoreEl = document.querySelector('.high-score');
 const startButtonEl = startPageEl.querySelector('#start-btn');
 const quizContainerEl = document.querySelector('#quiz-container');
 
 var startQuiz = function() {
-    if(currentIndex <= questions.length){
+    timer = setInterval(startTimer, 1000)
+    if(currentIndex <= questions.length - 1){
         //hide welcome screen
         startPageEl.hidden = true;
+
+        //clear page
+        quizContainerEl.innerHTML="";
     
         //create question container div
         var questionContainerEl = document.createElement('div');
@@ -100,8 +112,20 @@ var startQuiz = function() {
         quizContainerEl.appendChild(choicesContainer);
 
         choicesContainer.addEventListener('click', checkAnswer);
-    };
+    } else {
+        var user = prompt("You have finished the quiz! Let's see how you did!")
+        endGame(user);
+    }
 };
+
+var startTimer = function() {
+    time--;
+    timerEl.textContent = time + ' seconds left';
+    if(time <= -1) {
+        var user = prompt("Time's up, let's see how you did. Please enter your name:");
+        endGame(user);
+    }
+}
 
 var displayQuestion = function() {
     //create question element
@@ -151,6 +175,9 @@ var checkAnswer = function(e) {
 };
 
 var showStatIndicator = function(isCorrect) {
+    //stops the timer
+    clearInterval(timer); 
+    currentIndex++
     //disable all btn
     document.querySelectorAll('.choice-btn.neutral').forEach((btns) => {btns.classList.remove('neutral'); btns.disabled = true});
 
@@ -169,24 +196,100 @@ var showStatIndicator = function(isCorrect) {
     nextButtonEl.textContent = 'Next';
     nextBtnCont.appendChild(nextButtonEl);
     if(isCorrect) {
-        indicatorEl.textContent = 'Correct!' 
+        indicatorEl.textContent = 'Correct!'
+        time +=2;
     } else {
         indicatorEl.textContent = 'Incorrect.'
-    }
+        time -=10;
+    } 
     statContainerEl.appendChild(indicatorCont);
     statContainerEl.appendChild(nextBtnCont);
     quizContainerEl.appendChild(statContainerEl);
 
     var nextButton = statContainerEl.querySelector('#next-btn');
-    nextButton.addEventListener('click', nextQuestion);
+    nextButton.addEventListener('click', startQuiz);
 };
 
-var nextQuestion = function() {
-    currentIndex++
+var endGame = function(user) {
+    clearInterval(timer);
 
-    if(currentIndex <= questions.length) {
-        
+    timerEl.innerHTML = "";
+    quizContainerEl.innerHTML="";
+
+    highscores.push({user:user, score: Math.max(0, time)});
+    localStorage.setItem('highscores', JSON.stringify(highscores));
+    showHighScores()
+}
+
+var confirmShowHighScore = function() {
+    var quizPage = document.querySelector('.choice-btn');
+    
+    if(quizPage) {
+        var confirmShow = confirm('Quiz is still in progress. Are you sure you want to view high scores?');
+        if(confirmShow) {
+            showHighScores();
+        } else{}
+    } else {
+        showHighScores();
     }
 }
 
+var showHighScores = function() {
+    startPageEl.hidden = true;
+    clearInterval(timer);
+    loadHighScore()
+    
+    highscores.sort((a,b) => b.score - a.score);
+
+    timerEl.innerHTML = "";
+    quizContainerEl.innerHTML="";
+
+    var highScoreCont = document.createElement('div');
+    var highScoreTitle = document.createElement('h3');
+    var highScoreUl = document.createElement('ul');
+    var backButton = document.createElement('div');
+    var backButtonEl = document.createElement('button');
+    highScoreCont.id = 'high-score-container';
+    highScoreTitle.textContent = 'High Scores:'
+    backButton.id = 'back-btn-container'
+    backButtonEl.id = 'back-btn';
+    backButtonEl.textContent = '← Back';
+    
+    if(!highscores.length) {
+        highScoreUl.textContent = 'No saved high scores yet.'
+    } else {
+        highscores.forEach((score) => {
+            console.log(score)
+            var highScoreLi = document.createElement('li');
+            highScoreLi.textContent = score.user + " - " + score.score;
+            highScoreUl.appendChild(highScoreLi);
+        })
+    };
+
+    highScoreCont.appendChild(highScoreTitle);
+    highScoreCont.appendChild(highScoreUl);
+    backButton.appendChild(backButtonEl);
+    quizContainerEl.appendChild(highScoreCont);
+    quizContainerEl.appendChild(backButton);
+
+    backButtonEl.addEventListener('click', showStartingPage)
+};
+
+var loadHighScore = function() {
+    //reset highscore array each time we get data from localStorage
+    highscores = [];
+    var getHighScore = JSON.parse(localStorage.getItem('highscores'));
+
+    if(getHighScore) {
+        getHighScore.forEach((score) => highscores.push(score));
+    };
+};
+
+var showStartingPage = function() {
+    quizContainerEl.innerHTML = '';
+    startPageEl.hidden = false;
+}
+
 startButtonEl.addEventListener('click', startQuiz);
+viewHighScoreEl.addEventListener('click', confirmShowHighScore);
+loadHighScore();
