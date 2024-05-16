@@ -9,6 +9,24 @@ const questions = [
        ],
     },
     {
+        q: "Where did Taylor Swift grow up?",
+        a: [
+             {option: "Pennsylvania", correct: true},
+             {option: "Tennessee", correct: false},
+             {option: "California", correct: false},
+             {option: "Connecticut", correct: false},
+        ],
+     },
+     {
+        q: "Which of these is a Taylor Swift song?",
+        a: [
+             {option: "Red", correct: true},
+             {option: "Blue", correct: false},
+             {option: "Green", correct: false},
+             {option: "Yellow", correct: false},
+        ],
+     },
+    {
         q: "What is Taylor Swift's middle name?",
         a: [
              {option: "Alison", correct: true},
@@ -54,12 +72,39 @@ const questions = [
         ],
     }, 
     {
+        q: "Which of these people hasn't Taylor Swift dated?",
+        a: [
+            {option: "Ryan Gosling", correct: true},
+            {option: "Jake Gyllenhaal", correct: false},
+            {option: "Calvin Harris", correct: false},
+            {option: "Harry Styles", correct: false},
+        ],
+    }, 
+    {
         q: "What was the first song that Taylor wrote?",
         a: [
             {option: "Lucky You", correct: true},
             {option: "Picture to Burn", correct: false},
             {option: "Tim McGraw", correct: false},
             {option: "Teardrops On My Guitar", correct: false},
+        ],
+    },
+    {
+        q: "Which of these is NOT a Taylor Swift song?",
+        a: [
+            {option: "Cameo", correct: true},
+            {option: "Cardigan", correct: false},
+            {option: "Champagne Problems", correct: false},
+            {option: "Cruel Summer", correct: false},
+        ],
+    },
+    {
+        q: "Which college did Taylor Swift go to?",
+        a: [
+            {option: "She didn't", correct: true},
+            {option: "NYU", correct: false},
+            {option: "UCLA", correct: false},
+            {option: "UT at Austin", correct: false},
         ],
     },
     {
@@ -113,7 +158,10 @@ var startQuiz = function() {
 
         choicesContainer.addEventListener('click', checkAnswer);
     } else {
-        var user = prompt("You have finished the quiz! Let's see how you did!")
+        var user = prompt("You have finished the quiz! Let's see how you did!");
+        if(!user){
+          user = prompt("You have finished the quiz! Let's see how you did!");
+        }
         endGame(user);
     }
 };
@@ -122,7 +170,10 @@ var startTimer = function() {
     time--;
     timerEl.textContent = time + ' seconds left';
     if(time <= -1) {
-        var user = prompt("Time's up, let's see how you did. Please enter your name:");
+        var user = prompt("Time's up! Let's see how you did. Please enter your name:");
+        if(!user){
+            user = prompt("You have finished the quiz! Let's see how you did!");
+        }
         endGame(user);
     }
 }
@@ -197,10 +248,10 @@ var showStatIndicator = function(isCorrect) {
     nextBtnCont.appendChild(nextButtonEl);
     if(isCorrect) {
         indicatorEl.textContent = 'Correct!'
-        time +=2;
+        time +=5;
     } else {
         indicatorEl.textContent = 'Incorrect.'
-        time -=10;
+        time -=15;
     } 
     statContainerEl.appendChild(indicatorCont);
     statContainerEl.appendChild(nextBtnCont);
@@ -259,7 +310,6 @@ var showHighScores = function() {
         highScoreUl.textContent = 'No saved high scores yet.'
     } else {
         highscores.forEach((score) => {
-            console.log(score)
             var highScoreLi = document.createElement('li');
             highScoreLi.textContent = score.user + " - " + score.score;
             highScoreUl.appendChild(highScoreLi);
